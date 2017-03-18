@@ -12,15 +12,15 @@
 template <class data_type>
 class Matrix { 
 	private: 
+		std :: vector <data_type> vals;
 		typedef std::vector<data_type> row;
 		typedef std::vector<row> matrix;
 		matrix M;
 		unsigned int row_size;
 		unsigned int col_size;
 
-		std :: vector <data_type> vals;
-
 	public: 
+
 		// Constructor with no parameters
 		Matrix();
 
@@ -28,7 +28,8 @@ class Matrix {
 		Matrix(const unsigned int r_size, const unsigned int c_size);
 
 		// Copy constructor
-		Matrix (const Matrix &obj);
+		template <class e_type>
+		Matrix (const Matrix <e_type> &obj);
 
 		void populate_vector() {}
 		template <typename... Args>
@@ -49,15 +50,22 @@ class Matrix {
 		void display_col(const unsigned int col);
 
 		void set_value(const unsigned int row, const unsigned int col, const data_type val);
-		data_type get_value(const unsigned int row, const unsigned int col);
+		data_type get_value(const unsigned int row, const unsigned int col) const;
+
+		void set_row_size(const unsigned int r_size);
+		unsigned int get_row_size() const;
+
+		void set_col_size(const unsigned int c_size);
+		unsigned int get_col_size() const;
+
 
 		data_type det ();
 		data_type determinant (Matrix <data_type> &mat, int N);
 		void cofactor_matrix (Matrix <data_type> &mat, Matrix <data_type> &cofactor, int p, int q, int N);
 
-		Matrix <float> inv ();
+		Matrix <double> inv ();
 		void adjoint(Matrix <data_type> &A,Matrix <data_type> &adj);
-		bool inverse(Matrix <data_type> &A, Matrix <float> &inverse);
+		bool inverse(Matrix <data_type> &A, Matrix <double> &inverse);
 
 		template <class d_type> friend 
 		Matrix <d_type> operator + (const Matrix <d_type> &M1, const Matrix <d_type> &M2);
@@ -78,28 +86,28 @@ class Matrix {
 		void operator *= (Matrix <d_type> &M1, const Matrix <d_type> &M2);
 
 		template <class d_type> friend 
-		Matrix <d_type> operator + (const Matrix <d_type> &M1, const int x);
+		Matrix <d_type> operator + (const Matrix <d_type> &M1, const d_type x);
 
 		template <class d_type>	friend 
-		void operator += (Matrix <d_type> &M1, const int x);
+		void operator += (Matrix <d_type> &M1, const d_type x);
 
 		template <class d_type> friend 
-		Matrix <d_type> operator - (const Matrix <d_type> &M1, const int x);
+		Matrix <d_type> operator - (const Matrix <d_type> &M1, const d_type x);
 
 		template <class d_type>	friend 
-		void operator -= (Matrix <d_type> &M1, const int x);
+		void operator -= (Matrix <d_type> &M1, const d_type x);
 
 		template <class d_type>	friend 
-		Matrix <d_type> operator * (const Matrix <d_type> &M1, const int x);
+		Matrix <d_type> operator * (const Matrix <d_type> &M1, const d_type x);
 
 		template <class d_type>	friend 
-		void operator *= (Matrix <d_type> &M1, const int x);		
+		void operator *= (Matrix <d_type> &M1, const d_type x);		
 
 		template <class d_type>	friend 
-		Matrix <d_type> operator / (const Matrix <d_type> &M1, const int x);
+		Matrix <d_type> operator / (const Matrix <d_type> &M1, const d_type x);
 
 		template <class d_type>	friend 
-		void operator /= (Matrix <d_type> &M1, const int x);		
+		void operator /= (Matrix <d_type> &M1, const d_type x);		
 
 
 }; 
@@ -120,11 +128,12 @@ Matrix <data_type> :: Matrix(const unsigned int r_size, const unsigned int c_siz
 		M[i].resize(col_size);
 }
 
-template <class data_type> 
-Matrix <data_type> :: Matrix(const Matrix &obj){
-	row_size = obj.M.size();
+template <class data_type>
+template <class e_type> 
+Matrix <data_type> :: Matrix(const Matrix <e_type> &obj){
+	row_size = obj.get_row_size();
 	if (row_size > 0)
-		col_size = obj.M[0].size();
+		col_size = obj.get_col_size();
 	else
 		col_size = 0;
 	
@@ -133,7 +142,7 @@ Matrix <data_type> :: Matrix(const Matrix &obj){
 	for (int i=0; i<row_size; i++){
 		M[i].resize(col_size);
 		for (int j=0; j<col_size; j++)
-			M[i][j] = obj.M[i][j];
+			M[i][j] = obj.get_value(i, j);
 	}
 }
 
@@ -246,9 +255,30 @@ void Matrix <data_type> :: set_value(const unsigned int row, const unsigned int 
 }
 
 template <class data_type> 
-data_type Matrix <data_type> :: get_value(const unsigned int row, const unsigned int col){
+data_type Matrix <data_type> :: get_value(const unsigned int row, const unsigned int col) const{
 	return M[row][col];
 }
+
+template <class data_type> 
+void Matrix <data_type> :: set_row_size(const unsigned int r_size){
+	row_size = r_size;
+}
+
+template <class data_type> 
+unsigned int Matrix <data_type> :: get_row_size() const{
+	return row_size;
+}
+
+template <class data_type> 
+void Matrix <data_type> :: set_col_size(const unsigned int c_size){
+	col_size = c_size;
+}
+
+template <class data_type> 
+unsigned int Matrix <data_type> :: get_col_size() const{
+	return col_size;
+}
+
 
 template <class data_type> 
 data_type Matrix <data_type> :: det (){
@@ -261,7 +291,7 @@ data_type Matrix <data_type> :: det (){
 
 	for (int i=0; i< row_size; i++){
 		for (int j=0; j< col_size; j++)
-			mat.M[i][j] = M[i][j];
+			mat.set_value(i, j, M[i][j]);
 	}	
 
 	return determinant (mat, row_size);
@@ -272,7 +302,7 @@ template <class data_type>
 data_type Matrix <data_type> :: determinant (Matrix <data_type> &mat, int N){
     
     if (N == 1)
-        return mat.M[0][0];
+        return mat.get_value(0, 0);
     
     data_type det = 0;
 
@@ -282,7 +312,7 @@ data_type Matrix <data_type> :: determinant (Matrix <data_type> &mat, int N){
 
     for (int i = 0; i < N; i++){
         cofactor_matrix(mat, cofactor, 0, i, N);
-        det += (sign_multiplier * mat.M[0][i] * determinant(cofactor, N-1));
+        det += (sign_multiplier * mat.get_value(0, i) * determinant(cofactor, N-1));
         // std::cout<<"Determinant after "<<i<<"th step."<<det<<std::endl;
         sign_multiplier = -sign_multiplier;
     }
@@ -298,7 +328,9 @@ void Matrix <data_type> :: cofactor_matrix (Matrix <data_type> &mat, Matrix <dat
         for (int col = 0; col < N; col++){
 
             if (row != p && col != q){
-                cofactor.M[i][j++] = mat.M[row][col];
+            	cofactor.set_value(i, j, mat.get_value(row, col));
+            	j++;
+                // cofactor.M[i][j++] = mat.M[row][col];
  
                 if (j == N - 1){
                     j = 0;
@@ -312,9 +344,9 @@ void Matrix <data_type> :: cofactor_matrix (Matrix <data_type> &mat, Matrix <dat
 
 
 template <class data_type> 
-Matrix <float> Matrix <data_type> :: inv (){
+Matrix <double> Matrix <data_type> :: inv (){
 
-	Matrix <float> inv(row_size, col_size);
+	Matrix <double> inv(row_size, col_size);
 
 	if ( row_size != col_size ){
 		std :: cerr << "Square matrix required for calculating inverse. Returning 0 matrix."<<std::endl;
@@ -325,13 +357,13 @@ Matrix <float> Matrix <data_type> :: inv (){
 
 	for (int i=0; i< row_size; i++){
 		for (int j=0; j< col_size; j++)
-			A.M[i][j] = M[i][j];
+			A.set_value(i, j, M[i][j]);
 	}	
 
 	if (inverse(A, inv))
 		return inv;
 
-	Matrix <float> x(row_size, col_size);
+	Matrix <double> x(row_size, col_size);
 	return x;
 
 }
@@ -341,7 +373,7 @@ void Matrix <data_type> :: adjoint(Matrix <data_type> &A,Matrix <data_type> &adj
 	int N = adj.row_size;
     if (N == 1)
     {
-        adj.M[0][0] = 1;
+        adj.set_value(0, 0, 1);
         return;
     }
  
@@ -354,13 +386,14 @@ void Matrix <data_type> :: adjoint(Matrix <data_type> &A,Matrix <data_type> &adj
         {
             cofactor_matrix(A, temp, i, j, N);
             sign = ((i+j)%2==0)? 1: -1;
-            adj.M[j][i] = (sign)*(determinant(temp, N-1));
+            adj.set_value(j, i, (sign)*(determinant(temp, N-1)));
+            // adj.M[j][i] = (sign)*(determinant(temp, N-1));
         }
     }
 }
 
 template <class data_type> 
-bool Matrix <data_type> :: inverse(Matrix <data_type> &A, Matrix <float> &inverse){
+bool Matrix <data_type> :: inverse(Matrix <data_type> &A, Matrix <double> &inverse){
 	int N = A.row_size;
     data_type det = determinant(A, N);
     if (det == 0)
@@ -374,7 +407,7 @@ bool Matrix <data_type> :: inverse(Matrix <data_type> &A, Matrix <float> &invers
 
     for (int i=0; i<N; i++){
         for (int j=0; j<N; j++)
-            inverse.set_value(i, j, adj.get_value(i,j) / (float) det);
+            inverse.set_value(i, j, adj.get_value(i,j) / (double) det);
     }
  
     return true;
@@ -397,7 +430,8 @@ Matrix <data_type> operator+ (const Matrix <data_type> &M1, const Matrix <data_t
 
 	for (int i=0; i<M3.row_size; i++){
 		for (int j=0; j<M3.col_size; j++)
-			M3.M[i][j] = M1.M[i][j] + M2.M[i][j];
+			M3.set_value(i, j, M1.get_value(i, j) + M2.get_value(i, j));
+			// M3.M[i][j] = M1.M[i][j] + M2.M[i][j];
 	}
 
 	return M3;
@@ -415,7 +449,8 @@ void operator+= (Matrix <data_type> &M1, const Matrix <data_type> &M2) {
 
 	for (int i=0; i<M1.row_size; i++){
 		for (int j=0; j<M1.col_size; j++)
-			M1.M[i][j] = M1.M[i][j] + M2.M[i][j];
+			M1.set_value(i, j, M1.get_value(i, j) + M2.get_value(i, j));
+			// M1.M[i][j] = M1.M[i][j] + M2.M[i][j];
 	}
 
 }
@@ -433,7 +468,8 @@ Matrix <data_type> operator- (const Matrix <data_type> &M1, const Matrix <data_t
 
 	for (int i=0; i<M3.row_size; i++){
 		for (int j=0; j<M3.col_size; j++)
-			M3.M[i][j] = M1.M[i][j] - M2.M[i][j];
+			M3.set_value(i, j, M1.get_value(i, j) - M2.get_value(i, j));
+			// M3.M[i][j] = M1.M[i][j] - M2.M[i][j];
 	}
 
 	return M3;
@@ -451,7 +487,8 @@ void operator-= (Matrix <data_type> &M1, const Matrix <data_type> &M2) {
 
 	for (int i=0; i<M1.row_size; i++){
 		for (int j=0; j<M1.col_size; j++)
-			M1.M[i][j] = M1.M[i][j] - M2.M[i][j];
+			M1.set_value(i, j, M1.get_value(i, j) - M2.get_value(i, j));
+			// M1.M[i][j] = M1.M[i][j] - M2.M[i][j];
 	}
 
 }
@@ -468,11 +505,13 @@ Matrix <data_type> operator* (const Matrix <data_type> &M1, const Matrix <data_t
 
 	for (int i=0; i<M1.row_size; i++){
 		for (int j=0; j<M2.col_size; j++){
-			int x=0;
+			data_type x=0;
 			for (int k=0; k<M1.col_size; k++){
-				x += (M1.M[i][k] * M2.M[k][j]);
+				x += M1.get_value(i,k) * M2.get_value(k,j);
+				// x += (M1.M[i][k] * M2.M[k][j]);
 			}
-			M3.M[i][j] = x;
+			M3.set_value(i, j, x);
+			// M3.M[i][j] = x;
 		}
 	}
 
@@ -490,11 +529,13 @@ void operator*= (Matrix <data_type> &M1, const Matrix <data_type> &M2) {
 
 	for (int i=0; i<M1.row_size; i++){
 		for (int j=0; j<M2.col_size; j++){
-			int x=0;
+			data_type x=0;
 			for (int k=0; k<M1.col_size; k++){
-				x += M1.M[i][k] * M2.M[k][j];
+				x += M1.get_value(i,k) * M2.get_value(k,j);
+				// x += M1.M[i][k] * M2.M[k][j];
 			}
-			M3.M[i][j] = x;
+			M3.set_value(i, j, x);
+			// M3.M[i][j] = x;
 		}
 	}
 
@@ -502,7 +543,8 @@ void operator*= (Matrix <data_type> &M1, const Matrix <data_type> &M2) {
 
 	for (int i=0; i<M1.row_size; i++){
 		for (int j=0; j<M1.col_size; j++){
-			M1.M[i][j] = M3.M[i][j];
+			M1.set_value(i, j, M3.get_value(i,j));
+			// M1.M[i][j] = M3.M[i][j];
 		}
 	}
 
@@ -511,13 +553,14 @@ void operator*= (Matrix <data_type> &M1, const Matrix <data_type> &M2) {
 
 
 template <class data_type>
-Matrix <data_type> operator+ (const Matrix <data_type> &M1, const int x) {
+Matrix <data_type> operator+ (const Matrix <data_type> &M1, const data_type x) {
 		
 	Matrix <data_type> M2(M1.row_size, M1.col_size);
 
 	for (int i=0; i<M2.row_size; i++){
 		for (int j=0; j<M2.col_size; j++)
-			M2.M[i][j] = M1.M[i][j] + x;
+			M2.set_value(i, j, M1.get_value(i,j)+x);
+			// M2.M[i][j] = M1.M[i][j] + x;
 	}
 
 	return M2;
@@ -525,23 +568,25 @@ Matrix <data_type> operator+ (const Matrix <data_type> &M1, const int x) {
 
 
 template <class data_type>
-void operator+= (Matrix <data_type> &M1, const int x) {
+void operator+= (Matrix <data_type> &M1, const data_type x) {
 
 	for (int i=0; i<M1.row_size; i++){
 		for (int j=0; j<M1.col_size; j++)
-			M1.M[i][j] = M1.M[i][j] + x;
+			M1.set_value(i, j, M1.get_value(i,j)+x);
+			// M2.M[i][j] = M1.M[i][j] + x;
 	}
 
 }
 
 template <class data_type>
-Matrix <data_type> operator- (const Matrix <data_type> &M1, const int x) {
+Matrix <data_type> operator- (const Matrix <data_type> &M1, const data_type x) {
 		
 	Matrix <data_type> M2(M1.row_size, M1.col_size);
 
 	for (int i=0; i<M2.row_size; i++){
 		for (int j=0; j<M2.col_size; j++)
-			M2.M[i][j] = M1.M[i][j] - x;
+			M2.set_value(i, j, M1.get_value(i,j)-x);
+			// M2.M[i][j] = M1.M[i][j] - x;
 	}
 
 	return M2;
@@ -549,24 +594,26 @@ Matrix <data_type> operator- (const Matrix <data_type> &M1, const int x) {
 
 
 template <class data_type>
-void operator-= (Matrix <data_type> &M1, const int x) {
+void operator-= (Matrix <data_type> &M1, const data_type x) {
 
 	for (int i=0; i<M1.row_size; i++){
 		for (int j=0; j<M1.col_size; j++)
-			M1.M[i][j] = M1.M[i][j] - x;
+			M1.set_value(i, j, M1.get_value(i,j)-x);
+			// M2.M[i][j] = M1.M[i][j] - x;
 	}
 
 }
 
 
 template <class data_type>
-Matrix <data_type> operator* (const Matrix <data_type> &M1, const int x) {
+Matrix <data_type> operator* (const Matrix <data_type> &M1, const data_type x) {
 
 	Matrix <data_type> M2(M1.row_size, M1.col_size);
 
 	for (int i=0; i<M2.row_size; i++){
 		for (int j=0; j<M2.col_size; j++)
-			M2.M[i][j] = M1.M[i][j] * x;
+			M2.set_value(i, j, M1.get_value(i,j)*x);
+			// M2.M[i][j] = M1.M[i][j] * x;
 	}
 
 	return M2;
@@ -574,17 +621,18 @@ Matrix <data_type> operator* (const Matrix <data_type> &M1, const int x) {
 }
 
 template <class data_type>
-void operator*= (Matrix <data_type> &M1, const int x) {
+void operator*= (Matrix <data_type> &M1, const data_type x) {
 
 	for (int i=0; i<M1.row_size; i++){
 		for (int j=0; j<M1.col_size; j++)
-			M1.M[i][j] = M1.M[i][j] * x;
+			M1.set_value(i, j, M1.get_value(i,j)*x);
+			// M1.M[i][j] = M1.M[i][j] * x;
 	}
 
 }
 
 template <class data_type>
-Matrix <data_type> operator/ (const Matrix <data_type> &M1, const int x) {
+Matrix <data_type> operator/ (const Matrix <data_type> &M1, const data_type x) {
 
 	if ( x==0 ){
 		std :: cerr << "Division by 0 not allowed."<<std :: endl;
@@ -595,7 +643,8 @@ Matrix <data_type> operator/ (const Matrix <data_type> &M1, const int x) {
 
 	for (int i=0; i<M2.row_size; i++){
 		for (int j=0; j<M2.col_size; j++)
-			M2.M[i][j] = M1.M[i][j] / x;
+			M2.set_value(i, j, M1.get_value(i,j)/x);
+			// M2.M[i][j] = M1.M[i][j] / x;
 	}
 
 	return M2;
@@ -603,7 +652,7 @@ Matrix <data_type> operator/ (const Matrix <data_type> &M1, const int x) {
 }
 
 template <class data_type>
-void operator/= (Matrix <data_type> &M1, const int x) {
+void operator/= (Matrix <data_type> &M1, const data_type x) {
 
 	if ( x==0 ){
 		std :: cerr << "Division by 0 not allowed."<<std :: endl;
@@ -612,7 +661,8 @@ void operator/= (Matrix <data_type> &M1, const int x) {
 
 	for (int i=0; i<M1.row_size; i++){
 		for (int j=0; j<M1.col_size; j++)
-			M1.M[i][j] = M1.M[i][j] / x;
+			M1.set_value(i, j, M1.get_value(i,j)/x);
+			// M1.M[i][j] = M1.M[i][j] / x;
 	}
 
 }

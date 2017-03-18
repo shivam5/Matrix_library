@@ -45,12 +45,19 @@ int main(){
 	M3.set_row(0, 2, 8, 7);
 	M3.display_matrix();
 
-	std :: cout<<"The determinal of M3 matrix is: "<<M3.det()<<std::endl;
+	std :: cout<<"The determinate of M3 matrix is: "<<M3.det()<<std::endl;
 
-	Matrix <float> M4;
+	Matrix <double> M4;
 	M4 = M3.inv();
 	std :: cout<<"The inverse of M3 matrix is:"<<std::endl;
 	M4.display_matrix();
+
+	//Explicit typecasting
+	Matrix <double> M5(M3);
+
+	Matrix <double> M6;	
+	M6 = M5 * M4;
+	M6.display_matrix();
 
 	return 0;
 }
