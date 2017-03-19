@@ -4,7 +4,7 @@
 #include <vector>
 #include <iostream>
 
-
+// #include <complex.h>
 #include <array>
 #include <numeric>
 
@@ -66,6 +66,10 @@ class Matrix {
 		Matrix <double> inv ();
 		void adjoint(Matrix <data_type> &A,Matrix <data_type> &adj);
 		bool inverse(Matrix <data_type> &A, Matrix <double> &inverse);
+
+		// Matrix <std::complex<double>> inv ();
+		// void adjoint(Matrix <std::complex<double>> &A,Matrix <std::complex<double>> &adj);
+		// bool inverse(Matrix <std::complex<double>> &A, Matrix <std::complex<double>> &inverse);
 
 		template <class d_type> friend 
 		Matrix <d_type> operator + (const Matrix <d_type> &M1, const Matrix <d_type> &M2);
@@ -409,6 +413,76 @@ bool Matrix <data_type> :: inverse(Matrix <data_type> &A, Matrix <double> &inver
  
     return true;
 }
+
+
+// template <class data_type> 
+// Matrix <std::complex<double>> Matrix <std::complex<double>> :: inv (){
+
+// 	Matrix <std::complex<double>> inv(row_size, col_size);
+
+// 	if ( row_size != col_size ){
+// 		std :: cerr << "Square matrix required for calculating inverse. Returning 0 matrix."<<std::endl;
+// 		return inv;
+// 	}
+
+// 	Matrix <std::complex<double>> A( row_size, col_size);
+
+// 	for (int i=0; i< row_size; i++){
+// 		for (int j=0; j< col_size; j++)
+// 			A.set_value(i, j, M[i][j]);
+// 	}	
+
+// 	if (inverse(A, inv))
+// 		return inv;
+
+// 	Matrix <std::complex<double>> x(row_size, col_size);
+// 	return x;
+
+// }
+
+// template <class data_type> 
+// void Matrix <std::complex<double>> :: adjoint(Matrix <data_type> &A,Matrix <data_type> &adj){
+// 	int N = adj.row_size;
+//     if (N == 1)
+//     {
+//         adj.set_value(0, 0, 1);
+//         return;
+//     }
+ 
+//     int sign = 1;
+//     Matrix <std::complex<double>> temp(N, N);
+ 
+//     for (int i=0; i<N; i++)
+//     {
+//         for (int j=0; j<N; j++)
+//         {
+//             cofactor_matrix(A, temp, i, j, N);
+//             sign = ((i+j)%2==0)? 1: -1;
+//             adj.set_value(j, i, (sign)*(determinant(temp, N-1)));
+//         }
+//     }
+// }
+
+// template <class data_type> 
+// bool Matrix <std::complex<double>> :: inverse(Matrix <std::complex<double>> &A, Matrix <std::complex<double>> &inverse){
+// 	int N = A.row_size;
+//     data_type det = determinant(A, N);
+//     if (det == 0)
+//     {
+//         std::cout << "Singular matrix, can't find its inverse";
+//         return false;
+//     }
+ 
+//     Matrix <std::complex<double>> adj(N, N);
+//     adjoint(A, adj);
+
+//     for (int i=0; i<N; i++){
+//         for (int j=0; j<N; j++)
+//             inverse.set_value(i, j, adj.get_value(i,j) / (std::complex<double>) det);
+//     }
+ 
+//     return true;
+// }
 
 
 

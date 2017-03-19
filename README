@@ -1,0 +1,48 @@
+Project Details
+================
+This is a single header file matrix library (matrix.h) for C++ to represent matrices of numerical types such as (int, long, float, double, complex,... ).
+
+Note: Dependencies - This file requires compiler and library support for the ISO C++ 2011 standard. This support must be enabled with the -std=c++11 or -std=gnu++11 compiler options.
+
+
+Author
+==============
+Shivam Mittal
+2nd year B.Tech Computer Science Engineering, IIT Ropar
+Email - 2015csb1032@iitrpr.ac.in
+Github profile - github.com/shivam5
+
+
+1. Directory Structure:
+=========================
+
+Matrix_Library
+  |
+  |- include
+      |- matrix.h
+  
+  |- src
+      |- main.cpp
+      |- a.out
+  
+  |- README
+
+
+
+Using the library
+==================
+Just include the library matrix.h in the required project and start using matrices.
+
+
+Compiling and running main.cpp (Example to show the usage of the matrix library)
+==================================================================================
+1. Open cmd, go to the src directory.
+2. $ g++ -std=c++0x main.cpp
+3. $ ./a.out
+
+
+Limitations / TODO
+===================
+1. Any operator +, -, * , / (matrix with matrix) or (matrix with scalar) would only be valid if (both the matrix) or (the matrix and scalar) respectively are of the same data type.
+
+2. The return type for inverse/determinant calculations is taken as double type matrix (Matrix <double>) Calculating inverse for complex numbers is not supported.
