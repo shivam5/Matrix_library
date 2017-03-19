@@ -12,12 +12,12 @@
 template <class data_type>
 class Matrix { 
 	private: 
-		std :: vector <data_type> vals;
 		typedef std::vector<data_type> row;
 		typedef std::vector<row> matrix;
 		matrix M;
 		unsigned int row_size;
 		unsigned int col_size;
+		std :: vector <data_type> vals;
 
 	public: 
 
@@ -313,7 +313,6 @@ data_type Matrix <data_type> :: determinant (Matrix <data_type> &mat, int N){
     for (int i = 0; i < N; i++){
         cofactor_matrix(mat, cofactor, 0, i, N);
         det += (sign_multiplier * mat.get_value(0, i) * determinant(cofactor, N-1));
-        // std::cout<<"Determinant after "<<i<<"th step."<<det<<std::endl;
         sign_multiplier = -sign_multiplier;
     }
  
@@ -330,7 +329,6 @@ void Matrix <data_type> :: cofactor_matrix (Matrix <data_type> &mat, Matrix <dat
             if (row != p && col != q){
             	cofactor.set_value(i, j, mat.get_value(row, col));
             	j++;
-                // cofactor.M[i][j++] = mat.M[row][col];
  
                 if (j == N - 1){
                     j = 0;
@@ -387,7 +385,6 @@ void Matrix <data_type> :: adjoint(Matrix <data_type> &A,Matrix <data_type> &adj
             cofactor_matrix(A, temp, i, j, N);
             sign = ((i+j)%2==0)? 1: -1;
             adj.set_value(j, i, (sign)*(determinant(temp, N-1)));
-            // adj.M[j][i] = (sign)*(determinant(temp, N-1));
         }
     }
 }
@@ -431,7 +428,6 @@ Matrix <data_type> operator+ (const Matrix <data_type> &M1, const Matrix <data_t
 	for (int i=0; i<M3.row_size; i++){
 		for (int j=0; j<M3.col_size; j++)
 			M3.set_value(i, j, M1.get_value(i, j) + M2.get_value(i, j));
-			// M3.M[i][j] = M1.M[i][j] + M2.M[i][j];
 	}
 
 	return M3;
@@ -450,7 +446,6 @@ void operator+= (Matrix <data_type> &M1, const Matrix <data_type> &M2) {
 	for (int i=0; i<M1.row_size; i++){
 		for (int j=0; j<M1.col_size; j++)
 			M1.set_value(i, j, M1.get_value(i, j) + M2.get_value(i, j));
-			// M1.M[i][j] = M1.M[i][j] + M2.M[i][j];
 	}
 
 }
@@ -469,7 +464,6 @@ Matrix <data_type> operator- (const Matrix <data_type> &M1, const Matrix <data_t
 	for (int i=0; i<M3.row_size; i++){
 		for (int j=0; j<M3.col_size; j++)
 			M3.set_value(i, j, M1.get_value(i, j) - M2.get_value(i, j));
-			// M3.M[i][j] = M1.M[i][j] - M2.M[i][j];
 	}
 
 	return M3;
@@ -488,7 +482,6 @@ void operator-= (Matrix <data_type> &M1, const Matrix <data_type> &M2) {
 	for (int i=0; i<M1.row_size; i++){
 		for (int j=0; j<M1.col_size; j++)
 			M1.set_value(i, j, M1.get_value(i, j) - M2.get_value(i, j));
-			// M1.M[i][j] = M1.M[i][j] - M2.M[i][j];
 	}
 
 }
@@ -508,10 +501,8 @@ Matrix <data_type> operator* (const Matrix <data_type> &M1, const Matrix <data_t
 			data_type x=0;
 			for (int k=0; k<M1.col_size; k++){
 				x += M1.get_value(i,k) * M2.get_value(k,j);
-				// x += (M1.M[i][k] * M2.M[k][j]);
 			}
 			M3.set_value(i, j, x);
-			// M3.M[i][j] = x;
 		}
 	}
 
@@ -532,10 +523,8 @@ void operator*= (Matrix <data_type> &M1, const Matrix <data_type> &M2) {
 			data_type x=0;
 			for (int k=0; k<M1.col_size; k++){
 				x += M1.get_value(i,k) * M2.get_value(k,j);
-				// x += M1.M[i][k] * M2.M[k][j];
 			}
 			M3.set_value(i, j, x);
-			// M3.M[i][j] = x;
 		}
 	}
 
@@ -544,7 +533,6 @@ void operator*= (Matrix <data_type> &M1, const Matrix <data_type> &M2) {
 	for (int i=0; i<M1.row_size; i++){
 		for (int j=0; j<M1.col_size; j++){
 			M1.set_value(i, j, M3.get_value(i,j));
-			// M1.M[i][j] = M3.M[i][j];
 		}
 	}
 
@@ -560,7 +548,6 @@ Matrix <data_type> operator+ (const Matrix <data_type> &M1, const data_type x) {
 	for (int i=0; i<M2.row_size; i++){
 		for (int j=0; j<M2.col_size; j++)
 			M2.set_value(i, j, M1.get_value(i,j)+x);
-			// M2.M[i][j] = M1.M[i][j] + x;
 	}
 
 	return M2;
@@ -573,7 +560,6 @@ void operator+= (Matrix <data_type> &M1, const data_type x) {
 	for (int i=0; i<M1.row_size; i++){
 		for (int j=0; j<M1.col_size; j++)
 			M1.set_value(i, j, M1.get_value(i,j)+x);
-			// M2.M[i][j] = M1.M[i][j] + x;
 	}
 
 }
@@ -586,7 +572,6 @@ Matrix <data_type> operator- (const Matrix <data_type> &M1, const data_type x) {
 	for (int i=0; i<M2.row_size; i++){
 		for (int j=0; j<M2.col_size; j++)
 			M2.set_value(i, j, M1.get_value(i,j)-x);
-			// M2.M[i][j] = M1.M[i][j] - x;
 	}
 
 	return M2;
@@ -599,7 +584,6 @@ void operator-= (Matrix <data_type> &M1, const data_type x) {
 	for (int i=0; i<M1.row_size; i++){
 		for (int j=0; j<M1.col_size; j++)
 			M1.set_value(i, j, M1.get_value(i,j)-x);
-			// M2.M[i][j] = M1.M[i][j] - x;
 	}
 
 }
@@ -613,7 +597,6 @@ Matrix <data_type> operator* (const Matrix <data_type> &M1, const data_type x) {
 	for (int i=0; i<M2.row_size; i++){
 		for (int j=0; j<M2.col_size; j++)
 			M2.set_value(i, j, M1.get_value(i,j)*x);
-			// M2.M[i][j] = M1.M[i][j] * x;
 	}
 
 	return M2;
@@ -626,7 +609,6 @@ void operator*= (Matrix <data_type> &M1, const data_type x) {
 	for (int i=0; i<M1.row_size; i++){
 		for (int j=0; j<M1.col_size; j++)
 			M1.set_value(i, j, M1.get_value(i,j)*x);
-			// M1.M[i][j] = M1.M[i][j] * x;
 	}
 
 }
@@ -644,7 +626,6 @@ Matrix <data_type> operator/ (const Matrix <data_type> &M1, const data_type x) {
 	for (int i=0; i<M2.row_size; i++){
 		for (int j=0; j<M2.col_size; j++)
 			M2.set_value(i, j, M1.get_value(i,j)/x);
-			// M2.M[i][j] = M1.M[i][j] / x;
 	}
 
 	return M2;
@@ -662,7 +643,6 @@ void operator/= (Matrix <data_type> &M1, const data_type x) {
 	for (int i=0; i<M1.row_size; i++){
 		for (int j=0; j<M1.col_size; j++)
 			M1.set_value(i, j, M1.get_value(i,j)/x);
-			// M1.M[i][j] = M1.M[i][j] / x;
 	}
 
 }
