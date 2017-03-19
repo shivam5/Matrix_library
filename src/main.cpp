@@ -76,6 +76,9 @@ int main(){
 		}
 	}
 
+	M7.display_matrix();
+	M7 *= std::complex<int>(3, 2);
+
 	M7.set_row(0, std::complex<int>(2, 2), std::complex<int>(8, 8), std::complex<int>(7, 7));
 	M7.display_matrix();
 

@@ -3,7 +3,6 @@
 
 #include <vector>
 #include <iostream>
-
 #include <complex.h>
 #include <array>
 #include <numeric>
@@ -31,6 +30,7 @@ class Matrix {
 		template <class e_type>
 		Matrix (const Matrix <e_type> &obj);
 
+		// Helper functions
 		void populate_vector() {}
 		template <typename... Args>
 		void populate_vector(data_type value, Args... args);
@@ -52,27 +52,26 @@ class Matrix {
 		void set_value(const unsigned int row, const unsigned int col, const data_type val);
 		data_type get_value(const unsigned int row, const unsigned int col) const;
 
-		void set_row_size(const unsigned int r_size);
 		unsigned int get_row_size() const;
 
-		void set_col_size(const unsigned int c_size);
 		unsigned int get_col_size() const;
 
 
 		data_type det ();
+		// Helper functions
 		data_type determinant (Matrix <data_type> &mat, int N);
 		void cofactor_matrix (Matrix <data_type> &mat, Matrix <data_type> &cofactor, int p, int q, int N);
 
 		template <typename d_type>
 		Matrix <std::complex<double>>  inv (Matrix <std::complex<d_type>> &A, int a);
-
+		// Helper functions
 		template <typename d_type>		
 		void  adjoint(Matrix <std::complex<d_type>> &A,Matrix <std::complex<d_type>> &adj);
-
 		template <typename d_type>
 		bool  inverse(Matrix <std::complex<d_type>> &A, Matrix <std::complex<double>> &inverse);
 
 		Matrix <double> inv (Matrix <data_type> &A);
+		// Helper functions
 		void adjoint(Matrix <data_type> &A,Matrix <data_type> &adj);
 		bool inverse(Matrix <data_type> &A, Matrix <double> &inverse);
 
@@ -117,8 +116,7 @@ class Matrix {
 
 		template <class d_type>	friend 
 		void operator /= (Matrix <d_type> &M1, const d_type x);		
-
-
+		
 }; 
 
 
@@ -269,18 +267,8 @@ data_type Matrix <data_type> :: get_value(const unsigned int row, const unsigned
 }
 
 template <class data_type> 
-void Matrix <data_type> :: set_row_size(const unsigned int r_size){
-	row_size = r_size;
-}
-
-template <class data_type> 
 unsigned int Matrix <data_type> :: get_row_size() const{
 	return row_size;
-}
-
-template <class data_type> 
-void Matrix <data_type> :: set_col_size(const unsigned int c_size){
-	col_size = c_size;
 }
 
 template <class data_type> 

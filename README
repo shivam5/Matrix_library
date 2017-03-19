@@ -41,6 +41,124 @@ Compiling and running main.cpp (Example to show the usage of the matrix library)
 3. $ ./a.out
 
 
+Features supported in this library
+===================================
+
+* Creating matrices of dynamic size. Matrices can be created in 3 ways :
+	1. Matrix <type> <name>
+		This will initiliaze the matrix M1 as empty matrix. Dimensions 0*0.
+		Eg : Matrix <int> M1
+
+	2. Matrix <type> <name>(row_size, col_size);
+		Creates a matrix with dimensions row_size*col_size.
+		Eg : Matrix <int> M1(3, 3);
+
+	3. 	Matrix <type> <name>(<matrix_to_be_copied>);
+		Matrix as a copy of another Matrix. This is also used in explicit typecasting. 
+		The type of the <name> Matrix and <matrix_to_be_copied> can be different.
+		Eg : Matrix <int> M2(M1);
+
+
+* Matrices can represent matrices of multiple numeric types. Eg:
+	Matrix <int> M1
+	Matrix <long> M1
+	Matrix <float> M1
+	Matrix <double> M1
+	Matrix <std::complex<int>> M1
+	Matrix <std::complex<long>> M1
+	Matrix <std::complex<float>> M1
+	Matrix <std::complex<double>> M1
+
+
+* Matrix can be resized by using resize() function. Eg:
+	M1.resize(new_row_size, new_col_size)
+
+
+* Setting values in matrix in multiple ways :
+	1. Whole matrix can be filled using set_matrix(), values given as arguments rasterized row wise. But the number of values entered should match with the dimension of the matrix. Eg:
+	M1.set_matrix(0, 1, 2, 3, 4, 5, 6, 7, 8);
+	where M1 is a integer matrix of size 3*3.
+
+	2. A row can be filled using set_row(), the row_number given as first argument, values given as next arguments. But the number of values entered should match with the dimension of the matrix. Eg:
+	M1.set_row(0, 10, 11, 12);
+	This will set the 0th row of M1 to 10 11 12.
+	where M1 is a integer matrix of size 3*3.
+
+	Note : Matrix is indexed by 0 not 1.
+
+	3. A column can be filled using set_col(), the column_number given as first argument, values given as next arguments. But the number of values entered should match with the dimension of the matrix. Eg:
+	M1.set_col(2, 13, 14, 15);
+	This will set the 2nd row of M1 to 13 14 15.
+	where M1 is a integer matrix of size 3*3.
+
+	4. A particular cell can be set using set_value, giving row, col and value as argument in orger given. Eg:
+	M1.set_value(i, j, i*j);
+	This will set the ith row and jth column to value i*j
+
+
+* Display/Returning values of matrix in multiple ways :
+	1. Whole matrix can be displayed using display_matrix(). Eg:
+	M1.display_matrix();
+
+	2. A row can be displayed using display_row(), the row_number given as argument. Eg:
+	M1.display_row(0);
+	This will display the 0th row of M1.
+
+	2. A column can be displayed using display_col(), the col_number given as argument. Eg:
+	M1.display_col(0);
+	This will display the 0th column of M1.
+
+	4. A particular cell can be obtained using get_value, giving row, col as arguments. Eg:
+	M1.get_value(i, j);
+	This will return the value of the ith row and jth column. Returned not displayed.
+
+
+* Getter functions for getting row and column size
+	1. Get row size using get_row_size(). Eg:
+	M1.get_row_size();
+
+	2. Get col size using get_col_size(). Eg:
+	M1.get_col_size();
+
+
+* Matrix multiplication, addition and subtraction of 2 matrices.
+	Operators + += - -= * *= on two matrices. The matrices should be of same data type.
+	Eg:
+	M2 = M1 + M2;
+	M2 += M1;
+	M2 = M1 - M2;
+	M2 -= M1;
+	M2 = M1 *M2;
+	M2 *= M1;
+
+
+* Scalar multiplication, addition, subtraction and division of matrix
+	Operators + += - -= * *= / /= on matrix and scalar. The matrix and the scalar should be of same data type.
+	Eg:
+	M2 = M1 + 2;
+	M2 += 3.5;
+	M2 = M1 - 4000;
+	M2 -= 10;
+	M2 = M1 * std::complex<int>(3, 2);
+	M2 *= std::complex<double>(3, 1);
+
+
+* Determinant of matrix using det(). Eg:
+	M7.det()
+
+* Inverse of matrices, The syntax for complex matrices and other matrices are different:
+	1. For non-complex matrices using matrixName.inv(matrixName) . The return type matrix would be Matrix <double>.
+	Eg: Inverse of M3 :
+	Matrix <double> M4;
+	M4 = M3.inv(M3);
+
+	2. For non-complex matrices using matrixName.inv(matrixName, int) . The return type matrix would be 	Matrix <std::complex<double>> .
+	Eg: Inverse of M7 (std::complex<int>) :
+	Matrix <std::complex<double>> M8;
+	M8 = M7.inv(M7,1);
+
+
+
 Limitations / TODO
 ===================
 1. Any operator +, -, * , / (matrix with matrix) or (matrix with scalar) would only be valid if (both the matrix) or (the matrix and scalar) respectively are of the same data type.
