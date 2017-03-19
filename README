@@ -45,4 +45,9 @@ Limitations / TODO
 ===================
 1. Any operator +, -, * , / (matrix with matrix) or (matrix with scalar) would only be valid if (both the matrix) or (the matrix and scalar) respectively are of the same data type.
 
-2. The return type for inverse/determinant calculations is taken as double type matrix (Matrix <double>) Calculating inverse for complex numbers is not supported.
+Explanation : 
+There is no implicit typecasting of matries in this library (Explicit typecasting support is provided). 
+M3 (float) = M2 (float) * M1 (int); // would be invalid.
+To do this, you should do :
+Matrix <float> M4(M1); //Explicit typecasting
+M3 = M2 * M4; // Matrix <float> = Matrix <float> * Matrix <float>
