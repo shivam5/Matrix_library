@@ -246,7 +246,7 @@ template <class data_type>
 void Matrix <data_type> :: display_row(const unsigned int row){
 	for (int j=0; j<col_size; j++)
 		std :: cout<<M[row][j]<<" ";
-	std :: cout<<std :: endl;
+	std :: cout<<std :: endl<<std :: endl;
 }
 
 template <class data_type> 
@@ -340,8 +340,6 @@ void Matrix <data_type> :: cofactor_matrix (Matrix <data_type> &mat, Matrix <dat
 template <class data_type> 
 template <typename d_type>
 Matrix <std::complex<double>> Matrix <data_type> :: inv (Matrix <std::complex<d_type>> &A, int a){
-	std::cout<<"With compex inv is called"<<std::endl;
-
 	Matrix <std::complex<double>> inv(row_size, col_size);
 
 	if ( A.get_col_size() != A.get_row_size() ){
@@ -388,7 +386,7 @@ bool Matrix <data_type> :: inverse(Matrix <std::complex<d_type>> &A, Matrix <std
     data_type det = determinant(A, N);
     if (det == 0)
     {
-        std::cout << "Singular matrix, can't find its inverse";
+        std::cout << "Singular matrix, can't find its inverse"<<std::endl;
         return false;
     }
  
@@ -418,8 +416,6 @@ bool Matrix <data_type> :: inverse(Matrix <std::complex<d_type>> &A, Matrix <std
 
 template <class data_type> 
 Matrix <double> Matrix <data_type> :: inv (Matrix <data_type> &A){
-	std::cout<<"Without compex inv is called"<<std::endl;
-
 	Matrix <double> inv(row_size, col_size);
 
 	if ( A.get_row_size() != A.get_col_size() ){
@@ -464,7 +460,7 @@ bool Matrix <data_type> :: inverse(Matrix <data_type> &A, Matrix <double> &inver
     data_type det = determinant(A, N);
     if (det == 0)
     {
-        std::cout << "Singular matrix, can't find its inverse";
+        std::cout << "Singular matrix, can't find its inverse"<<std::endl;
         return false;
     }
  

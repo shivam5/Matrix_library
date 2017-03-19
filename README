@@ -132,7 +132,7 @@ Features supported in this library
 	M2 *= M1;
 
 
-* Scalar multiplication, addition, subtraction and division of matrix
+* Scalar multiplication, addition and subtraction  of matrix
 	Operators + += - -= * *= / /= on matrix and scalar. The matrix and the scalar should be of same data type.
 	Eg:
 	M2 = M1 + 2;
@@ -141,6 +141,8 @@ Features supported in this library
 	M2 -= 10;
 	M2 = M1 * std::complex<int>(3, 2);
 	M2 *= std::complex<double>(3, 1);
+	M2 = M1 / std::complex<int>(3, 2);
+	M2 /= std::complex<double>(3, 1);
 
 
 * Determinant of matrix using det(). Eg:
@@ -152,7 +154,7 @@ Features supported in this library
 	Matrix <double> M4;
 	M4 = M3.inv(M3);
 
-	2. For non-complex matrices using matrixName.inv(matrixName, int) . The return type matrix would be 	Matrix <std::complex<double>> .
+	2. For non-complex matrices using matrixName.inv(matrixName, int) . The return type matrix would be Matrix <std::complex<double>> .
 	Eg: Inverse of M7 (std::complex<int>) :
 	Matrix <std::complex<double>> M8;
 	M8 = M7.inv(M7,1);
