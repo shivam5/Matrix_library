@@ -2,11 +2,7 @@
 #define BOOST_TEST_MODULE test
 
 #include <boost/test/included/unit_test.hpp>
-#include <iostream>
 #include "../include/matrix.h"
-#include <typeinfo>
-#include <string>
-#include <limits.h>
 #include <cmath>
 
 #define SIZE 3
@@ -427,11 +423,200 @@ BOOST_AUTO_TEST_CASE(Inverse_of_matrix)
 
 }
 
-
- 
 BOOST_AUTO_TEST_SUITE_END()
 
 
+///////////////////////////////////////////////////////////////////////////////
+//////	MATRICES OF TYPE COMPLEX (INT)
+///////////////////////////////////////////////////////////////////////////////
+
+
+BOOST_AUTO_TEST_SUITE(Complex_matrices)
+
+
+BOOST_AUTO_TEST_CASE(Matrix_Addition)
+{
+	Matrix <std::complex<int>> M1(SIZE, SIZE);
+	Matrix <std::complex<int>> M2(SIZE, SIZE);
+
+	for (int i=0; i<SIZE; i++){
+		for (int j=0; j<SIZE; j++){
+			M1.set_value(i, j, std::complex<int>((i*SIZE+j),(i*SIZE+j)*2 ) );
+			M2.set_value(i, j, std::complex<int>((i*SIZE+j)*3,(i*SIZE+j)*4 ));
+		}
+	}
+
+	Matrix <std::complex<int>> M3(SIZE, SIZE);
+	M3 = M1 + M2;
+	for (int i=0; i<SIZE; i++){
+		for (int j=0; j<SIZE; j++){
+			BOOST_CHECK( M3.get_value(i,j) == std::complex<int>((i*SIZE+j)*4,(i*SIZE+j)*6 ) );
+		}
+	}
+
+	M1 += M2;
+	for (int i=0; i<SIZE; i++){
+		for (int j=0; j<SIZE; j++){
+			BOOST_CHECK( M1.get_value(i,j) == std::complex<int>((i*SIZE+j)*4,(i*SIZE+j)*6 ) );
+		}
+	}
+}
+
+BOOST_AUTO_TEST_CASE(Matrix_Subtraction)
+{
+	Matrix <std::complex<int>> M1(SIZE, SIZE-1);
+	Matrix <std::complex<int>> M2(SIZE, SIZE-1);
+
+	for (int i=0; i<SIZE; i++){
+		for (int j=0; j<SIZE-1; j++){
+			M1.set_value(i, j, std::complex<int>((i*SIZE+j),(i*SIZE+j) ) );
+			M2.set_value(i, j, std::complex<int>((i*SIZE+j)*2,(i*SIZE+j)*2 ) );
+		}
+	}
+
+	Matrix <std::complex<int>> M3(SIZE, SIZE-1);
+	M3 = M1 - M2;
+	for (int i=0; i<SIZE; i++){
+		for (int j=0; j<SIZE-1; j++){
+			BOOST_CHECK( M3.get_value(i,j) == std::complex<int>( -(i*SIZE+j), -(i*SIZE+j)) );
+		}
+	}
+
+	M2 -= M1;
+	for (int i=0; i<SIZE; i++){
+		for (int j=0; j<SIZE-1; j++){
+			BOOST_CHECK( M2.get_value(i,j) == std::complex<int>((i*SIZE+j),(i*SIZE+j)) );
+		}
+	}
+
+}
+
+
+BOOST_AUTO_TEST_CASE(Matrix_Multiplication)
+{
+	Matrix <std::complex<int>> M1(1, 3);
+	Matrix <std::complex<int>> M2(3, 1);
+
+	for (int i=0; i<3; i++){
+		M1.set_value(0, i, std::complex<int>(i, i) );
+		M2.set_value(i, 0, std::complex<int>(i, i) );
+	}
+
+	Matrix <std::complex<int>> M3(1, 1);
+	M3 = M1 * M2;
+
+	BOOST_CHECK( M3.get_value(0,0) == std::complex<int>(0,10) );
+}
+
+
+
+BOOST_AUTO_TEST_CASE(Scalar_Operations)
+{
+	Matrix <std::complex<int>> M1(3, 3);
+
+	M1.set_matrix(std::complex<int>(1,3), std::complex<int>(5,7), std::complex<int>(3,4),
+		std::complex<int>(1,-2), std::complex<int>(0,0), std::complex<int>(0,1),
+		std::complex<int>(1,23), std::complex<int>(13,2), std::complex<int>(17,4));
+
+	BOOST_CHECK( M1.get_value(0,0) == std::complex<int>(1,3) );
+	BOOST_CHECK( M1.get_value(0,1) == std::complex<int>(5,7) );
+	BOOST_CHECK( M1.get_value(0,2) == std::complex<int>(3,4) );
+	BOOST_CHECK( M1.get_value(1,0) == std::complex<int>(1,-2) );
+	BOOST_CHECK( M1.get_value(1,1) == std::complex<int>(0,0) );
+	BOOST_CHECK( M1.get_value(1,2) == std::complex<int>(0,1) );
+	BOOST_CHECK( M1.get_value(2,0) == std::complex<int>(1,23) );
+	BOOST_CHECK( M1.get_value(2,1) == std::complex<int>(13,2) );
+	BOOST_CHECK( M1.get_value(2,2) == std::complex<int>(17,4) );
+
+	M1 += std::complex<int>(1,2);
+	BOOST_CHECK( M1.get_value(0,0) == std::complex<int>(2,5) );
+	BOOST_CHECK( M1.get_value(0,1) == std::complex<int>(6,9) );
+	BOOST_CHECK( M1.get_value(0,2) == std::complex<int>(4,6) );
+	BOOST_CHECK( M1.get_value(1,0) == std::complex<int>(2,0) );
+	BOOST_CHECK( M1.get_value(1,1) == std::complex<int>(1,2) );
+	BOOST_CHECK( M1.get_value(1,2) == std::complex<int>(1,3) );
+	BOOST_CHECK( M1.get_value(2,0) == std::complex<int>(2,25) );
+	BOOST_CHECK( M1.get_value(2,1) == std::complex<int>(14,4) );
+	BOOST_CHECK( M1.get_value(2,2) == std::complex<int>(18,6) );
+
+	M1 = M1 - std::complex<int>(1,2);
+	BOOST_CHECK( M1.get_value(0,0) == std::complex<int>(1,3) );
+	BOOST_CHECK( M1.get_value(0,1) == std::complex<int>(5,7) );
+	BOOST_CHECK( M1.get_value(0,2) == std::complex<int>(3,4) );
+	BOOST_CHECK( M1.get_value(1,0) == std::complex<int>(1,-2) );
+	BOOST_CHECK( M1.get_value(1,1) == std::complex<int>(0,0) );
+	BOOST_CHECK( M1.get_value(1,2) == std::complex<int>(0,1) );
+	BOOST_CHECK( M1.get_value(2,0) == std::complex<int>(1,23) );
+	BOOST_CHECK( M1.get_value(2,1) == std::complex<int>(13,2) );
+	BOOST_CHECK( M1.get_value(2,2) == std::complex<int>(17,4) );
+
+
+	M1 = M1 * std::complex<int>(1,1);
+	BOOST_CHECK( M1.get_value(0,0) == std::complex<int>(-2,4) );
+	BOOST_CHECK( M1.get_value(0,1) == std::complex<int>(-2,12) );
+	BOOST_CHECK( M1.get_value(0,2) == std::complex<int>(-1,7) );
+	BOOST_CHECK( M1.get_value(1,0) == std::complex<int>(3,-1) );
+	BOOST_CHECK( M1.get_value(1,1) == std::complex<int>(0,0) );
+	BOOST_CHECK( M1.get_value(1,2) == std::complex<int>(-1,1) );
+	BOOST_CHECK( M1.get_value(2,0) == std::complex<int>(-22,24) );
+	BOOST_CHECK( M1.get_value(2,1) == std::complex<int>(11,15) );
+	BOOST_CHECK( M1.get_value(2,2) == std::complex<int>(13,21) );
+
+	M1 /= std::complex<int>(1,1);
+	BOOST_CHECK( M1.get_value(0,0) == std::complex<int>(1,3) );
+	BOOST_CHECK( M1.get_value(0,1) == std::complex<int>(5,7) );
+	BOOST_CHECK( M1.get_value(0,2) == std::complex<int>(3,4) );
+	BOOST_CHECK( M1.get_value(1,0) == std::complex<int>(1,-2) );
+	BOOST_CHECK( M1.get_value(1,1) == std::complex<int>(0,0) );
+	BOOST_CHECK( M1.get_value(1,2) == std::complex<int>(0,1) );
+	BOOST_CHECK( M1.get_value(2,0) == std::complex<int>(1,23) );
+	BOOST_CHECK( M1.get_value(2,1) == std::complex<int>(13,2) );
+	BOOST_CHECK( M1.get_value(2,2) == std::complex<int>(17,4) );
+}
+
+
+BOOST_AUTO_TEST_CASE(Inverse_of_matrix)
+{
+	Matrix <std::complex<int>> M1(3, 3);
+
+	M1.set_matrix(std::complex<int>(1,3), std::complex<int>(5,7), std::complex<int>(3,4),
+		std::complex<int>(1,-2), std::complex<int>(0,0), std::complex<int>(0,1),
+		std::complex<int>(1,23), std::complex<int>(13,2), std::complex<int>(17,4));
+
+	Matrix <std::complex<double>> M2;
+	M2 = M1.inv(M1, 1);
+
+	Matrix <std::complex<double>> M3(M1);
+	M3 = M3 * M2;
+
+	double e = 1e-9;
+
+	BOOST_CHECK( M3.get_value(0,0).real() >= 1-e && M3.get_value(0,0).real() <= 1+e );
+	BOOST_CHECK( M3.get_value(0,0).imag() >= -e && M3.get_value(0,0).imag() <= e );	
+	BOOST_CHECK( M3.get_value(0,1).real() >= -e && M3.get_value(0,1).real() <= e );
+	BOOST_CHECK( M3.get_value(0,1).imag() >= -e && M3.get_value(0,1).imag() <= e );	
+	BOOST_CHECK( M3.get_value(0,2).real() >= -e && M3.get_value(0,2).real() <= e );
+	BOOST_CHECK( M3.get_value(0,2).imag() >= -e && M3.get_value(0,2).imag() <= e );	
+
+	BOOST_CHECK( M3.get_value(1,0).real() >= -e && M3.get_value(1,0).real() <= e );
+	BOOST_CHECK( M3.get_value(1,0).imag() >= -e && M3.get_value(1,0).imag() <= e );	
+	BOOST_CHECK( M3.get_value(1,1).real() >= 1-e && M3.get_value(1,1).real() <= 1+e );
+	BOOST_CHECK( M3.get_value(1,1).imag() >= -e && M3.get_value(1,1).imag() <= e );	
+	BOOST_CHECK( M3.get_value(1,2).real() >= -e && M3.get_value(1,2).real() <= e );
+	BOOST_CHECK( M3.get_value(1,2).imag() >= -e && M3.get_value(1,2).imag() <= e );	
+
+	BOOST_CHECK( M3.get_value(2,0).real() >= -e && M3.get_value(2,0).real() <= e );
+	BOOST_CHECK( M3.get_value(2,0).imag() >= -e && M3.get_value(2,0).imag() <= e );	
+	BOOST_CHECK( M3.get_value(2,1).real() >= -e && M3.get_value(2,1).real() <= e );
+	BOOST_CHECK( M3.get_value(2,1).imag() >= -e && M3.get_value(2,1).imag() <= e );	
+	BOOST_CHECK( M3.get_value(2,2).real() >= 1-e && M3.get_value(2,2).real() <= 1+e );
+	BOOST_CHECK( M3.get_value(2,2).imag() >= -e && M3.get_value(2,2).imag() <= e );	
+
+}
+
+
+
+BOOST_AUTO_TEST_SUITE_END()
 
 
 
