@@ -36,13 +36,13 @@ class Matrix {
 		void populate_vector(data_type value, Args... args);
 
 		template <typename... Args>
-		void set_matrix (data_type value, Args... args);
+		bool set_matrix (data_type value, Args... args);
 
 		template <typename... Args>
-		void set_row (const unsigned int row, data_type value, Args... args);
+		bool set_row (const unsigned int row, data_type value, Args... args);
 
 		template <typename... Args>
-		void set_col (const unsigned int col, data_type value, Args... args);
+		bool set_col (const unsigned int col, data_type value, Args... args);
 
 		void resize (const unsigned int r_size, const  unsigned int c_size);
 		void display_matrix();
@@ -163,11 +163,11 @@ void Matrix <data_type> :: populate_vector (data_type value, Args... args){
 
 template <class data_type>
 template <typename... Args>
-void Matrix <data_type> :: set_matrix (data_type value, Args... args){
+bool Matrix <data_type> :: set_matrix (data_type value, Args... args){
 	int n = sizeof...(args)+1;
 	if ( n != (row_size*col_size) ){
 		std :: cerr << "The number of arguments do not match with the dimensions of the matrix."<<std :: endl;
-		return;
+		return false;
 	}
 
 	vals.clear();
@@ -177,20 +177,21 @@ void Matrix <data_type> :: set_matrix (data_type value, Args... args){
 		for (int j=0; j<col_size; j++)
 			M[i][j] = vals[i*row_size+j];
 	}
+	return true;
 }
 
 template <class data_type>
 template <typename... Args>
-void Matrix <data_type> :: set_row (const unsigned int row, data_type value, Args... args){
+bool Matrix <data_type> :: set_row (const unsigned int row, data_type value, Args... args){
 	int n = sizeof...(args)+1;
 	if ( n != (row_size) ){
 		std :: cerr << "The number of arguments do not match with the row size."<<std :: endl;
-		return;
+		return false;
 	}
 
 	if ( row >= col_size ){
 		std :: cerr << "The column specified is out of bounds"<<std :: endl;
-		return;
+		return false;
 	}
 
 	vals.clear();
@@ -198,21 +199,23 @@ void Matrix <data_type> :: set_row (const unsigned int row, data_type value, Arg
 
 	for (int i=0; i<row_size; i++)
 		M[row][i] = vals[i];
+
+	return true;
 }
 
 template <class data_type>
 template <typename... Args>
-void Matrix <data_type> :: set_col (const unsigned int col, data_type value, Args... args){
+bool Matrix <data_type> :: set_col (const unsigned int col, data_type value, Args... args){
 	int n = sizeof...(args)+1;
 
 	if ( n != (col_size) ){
 		std :: cerr << "The number of arguments do not match with the column size."<<std :: endl;
-		return;
+		return false;
 	}
 
 	if ( col >= row_size ){
 		std :: cerr << "The column specified is out of bounds"<<std :: endl;
-		return;
+		return false;
 	}
 
 	vals.clear();
@@ -220,6 +223,7 @@ void Matrix <data_type> :: set_col (const unsigned int col, data_type value, Arg
 
 	for (int i=0; i<row_size; i++)
 		M[i][col] = vals[i];
+	return true;
 }
 
 template <class data_type> 
