@@ -24,6 +24,9 @@ Matrix_Library
   |- src
       |- main.cpp
       |- a.out
+
+  |- test
+      |- tests.cpp
   
   |- README
 
@@ -34,10 +37,19 @@ Using the library
 Just include the library matrix.h in the required project and start using matrices.
 
 
-Compiling and running main.cpp (Example to show the usage of the matrix library)
+Compiling and running main.cpp (src/main.cpp) (Example to show the usage of the matrix library)
 ==================================================================================
 1. Open cmd, go to the src directory.
 2. $ g++ -std=c++0x main.cpp
+3. $ ./a.out
+
+
+Compiling and running tests.cpp (test/tests.cpp) (Unit tests for the library)
+==================================================================================
+Dependencies : Boost should be installed
+
+1. Open cmd, go to the test directory.
+2. $ g++ -I <path to boost_1_63_0> -std=c++11 tests.cpp
 3. $ ./a.out
 
 
@@ -57,6 +69,9 @@ Features supported in this library
 		Matrix as a copy of another Matrix. This is also used in explicit typecasting. 
 		The type of the <name> Matrix and <matrix_to_be_copied> can be different.
 		Eg : Matrix <int> M2(M1);
+
+		Note : Matrix <std::complex<int>> M3(M2);
+		Here, M2 matrix cannot be of long, double, float type. It has to be int or std::complex<int>.
 
 
 * Matrices can represent matrices of multiple numeric types. Eg:
