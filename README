@@ -106,9 +106,12 @@ Features supported in this library
 	This will set the 2nd row of M1 to 13 14 15.
 	where M1 is a integer matrix of size 3*3.
 
+	The above three were implemented using variadic templates (feature of c++ 11).
+
 	4. A particular cell can be set using set_value, giving row, col and value as argument in orger given. Eg:
 	M1.set_value(i, j, i*j);
 	This will set the ith row and jth column to value i*j
+
 
 
 * Display/Returning values of matrix in multiple ways :
