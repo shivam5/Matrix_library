@@ -144,7 +144,7 @@ int main(){
 	std:: cout<<"Inverse of matrices:"<<std::endl;
 
 	Matrix <double> M4;
-	M4 = M3.inv(M2);
+	M4 = M2.inv(M2);
 	std :: cout<<"The inverse of M2 matrix is:"<<std::endl;
 	M4.display_matrix();
 
@@ -298,7 +298,7 @@ int main(){
 	std:: cout<<"Inverse of matrices:"<<std::endl;
 
 	Matrix <double> M9;
-	M9 = M8.inv(M7);
+	M9 = M7.inv(M7);
 	std :: cout<<"The inverse of M7 matrix is:"<<std::endl;
 	M9.display_matrix();
 
@@ -452,7 +452,7 @@ int main(){
 	std:: cout<<"Inverse of matrices:"<<std::endl;
 
 	Matrix <double> M14;
-	M14 = M13.inv(M12);
+	M14 = M12.inv(M12);
 	std :: cout<<"The inverse of M12 matrix is:"<<std::endl;
 	M14.display_matrix();
 
@@ -606,7 +606,7 @@ int main(){
 	std:: cout<<"Inverse of matrices:"<<std::endl;
 
 	Matrix <double> M19;
-	M19 = M18.inv(M17);
+	M19 = M17.inv(M17);
 	std :: cout<<"The inverse of M17 matrix is:"<<std::endl;
 	M19.display_matrix();
 
@@ -763,7 +763,7 @@ int main(){
 	std:: cout<<"Inverse of matrices:"<<std::endl;
 
 	Matrix <std::complex<double>> M24;
-	M24 = M23.inv(M22, 1);
+	M24 = M22.inv(M22, 1);
 	std :: cout<<"The inverse of M22 matrix is:"<<std::endl;
 	M24.display_matrix();
 
