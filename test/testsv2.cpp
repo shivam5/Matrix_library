@@ -2,7 +2,7 @@
 #define BOOST_TEST_MODULE test
 
 #include <boost/test/included/unit_test.hpp>
-#include "../include/matrix.hpp"
+#include "../include/matrixv2.hpp"
 #include <cmath>
 
 #define SIZE 3
@@ -155,9 +155,9 @@ BOOST_AUTO_TEST_CASE(Matrix_Addition)
 			M4.set_value(i, j, (i*SIZE+j));
 	}
 
-	std::cout<<"Adding matrices of 2 different dimensions:"<<std::endl;
-	M4 = M2 + M4;
-	std::cout<<std::endl;
+	// std::cout<<"Adding matrices of 2 different dimensions:"<<std::endl;
+	// M4 = M2 + M4;
+	// std::cout<<std::endl;
 
 }
 
@@ -195,9 +195,9 @@ BOOST_AUTO_TEST_CASE(Matrix_Subtraction)
 			M4.set_value(i, j, (i*SIZE+j));
 	}
 
-	std::cout<<"Subtracting matrices of 2 different dimesnsions:"<<std::endl;
-	M4 = M2 - M4;
-	std::cout<<std::endl;	
+	// std::cout<<"Subtracting matrices of 2 different dimesnsions:"<<std::endl;
+	// M4 = M2 - M4;
+	// std::cout<<std::endl;	
 }
 
 
@@ -254,11 +254,12 @@ BOOST_AUTO_TEST_CASE(Matrix_Multiplication)
 			M7.set_value(i, j, (i*SIZE+j));
 	}
 
-	std::cout<<"Multiplying matrices of incompatible dimesnsions:"<<std::endl;
-	M7 = M2 * M7;
-	std::cout<<std::endl;	
+	// std::cout<<"Multiplying matrices of incompatible dimesnsions:"<<std::endl;
+	// M7 = M2 * M7;
+	// std::cout<<std::endl;	
 
 }
+
 
 
 BOOST_AUTO_TEST_CASE(Scalar_Operations)
@@ -391,6 +392,7 @@ BOOST_AUTO_TEST_CASE(Inverse_of_matrix)
 	M2 = M1.inv(M1);
 
 	Matrix <double> M3(M1);
+
 	M3 = M3 * M2;
 
 	double e = 1e-9;

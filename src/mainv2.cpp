@@ -1,4 +1,4 @@
-#include "./../include/matrix.hpp"
+#include "./../include/matrixv2.hpp"
 #define SIZE 3
 
 int main(){

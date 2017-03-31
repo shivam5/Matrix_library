@@ -1,6 +1,9 @@
 Project Details
 ================
-This is a single header file matrix library (matrix.h) for C++ to represent matrices of numerical types such as (int, long, float, double, complex,... ).
+This is a single header file matrix library (matrix.hpp) for C++ to represent matrices of numerical types such as (int, long, float, double, complex,... ).
+
+matrixv2.hpp uses expression templating, the rest functionality is all same.
+Due to template and inlining, writing expressions are as efficient as if we directly write a for loop to implement the update rule.
 
 Note: Dependencies - This file requires compiler and library support for the ISO C++ 2011 standard. This support must be enabled with the -std=c++11 or -std=gnu++11 compiler options.
 
@@ -19,7 +22,7 @@ Github profile - github.com/shivam5
 Matrix_Library
   |
   |- include
-      |- matrix.h
+      |- matrix.hpp
   
   |- src
       |- main.cpp
@@ -34,13 +37,21 @@ Matrix_Library
 
 Using the library
 ==================
-Just include the library matrix.h in the required project and start using matrices.
+Just include the library matrix.hpp in the required project and start using matrices.
 
 
 Compiling and running main.cpp (src/main.cpp) (Example to show the usage of the matrix library)
 ==================================================================================
 1. Open cmd, go to the src directory.
+
+For using matrix.hpp : 
 2. $ g++ -std=c++0x main.cpp
+
+Or
+
+For using matrixv2.hpp
+2. $ g++ -std=c++14 mainv2.cpp (for using matrixv2.hpp)
+
 3. $ ./a.out
 
 
@@ -49,7 +60,15 @@ Compiling and running tests.cpp (test/tests.cpp) (Unit tests for the library)
 Dependencies : Boost should be installed
 
 1. Open cmd, go to the test directory.
+
+For using matrix.hpp
 2. $ g++ -I <path to boost_1_63_0> -std=c++11 tests.cpp
+
+Or
+
+For using matrixv2.hpp
+2. g++ -I <path to boost_1_63_0> -std=c++14 testsv2.cpp
+ 
 3. $ ./a.out
 
 
@@ -140,7 +159,8 @@ Features supported in this library
 
 
 * Matrix multiplication, addition and subtraction of 2 matrices.
-	Operators + += - -= * *= on two matrices. The matrices should be of same data type.
+	Operators + += - -= * *= on two matrices. The matrices should be of same data type (in matrix.hpp).
+	They could be of different data type in matrixv2.hpp .
 	Eg:
 	M2 = M1 + M2;
 	M2 += M1;
@@ -181,6 +201,8 @@ Features supported in this library
 
 Limitations / TODO
 ===================
+
+For matrix.hpp
 1. Any operator +, -, * , / (matrix with matrix) or (matrix with scalar) would only be valid if (both the matrix) or (the matrix and scalar) respectively are of the same data type.
 
 Explanation : 
@@ -189,3 +211,8 @@ M3 (float) = M2 (float) * M1 (int); // would be invalid.
 To do this, you should do :
 Matrix <float> M4(M1); //Explicit typecasting
 M3 = M2 * M4; // Matrix <float> = Matrix <float> * Matrix <float>
+
+
+For matrixv2.hpp
+1. Any operator +, -, * , /  (matrix with scalar) would only be valid if (the matrix and scalar) respectively are of the same data type.
+The matrix with matrix operations support implicit typecasting due to expression templating.
